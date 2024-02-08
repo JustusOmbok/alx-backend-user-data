@@ -100,7 +100,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     return connection
 
 
-def main() -> NoReturn:
+def main():
     """Retrieves all rows in the users table
     and displays each row under a filtered format."""
     logger = logging.getLogger('user_data')
