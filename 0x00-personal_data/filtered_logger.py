@@ -10,7 +10,7 @@ patterns = {
     'replace': lambda x: r'\g<field>={}'.format(x),
 }
 
-PII_FIELDS = ("name", "email", "phone", "ssn", "password", "date_of_birth")
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def filter_datum(
@@ -65,5 +65,18 @@ class RedactingFormatter(logging.Formatter):
             A string representing the formatted log record.
         """
         msg = super(RedactingFormatter, self).format(record)
-        txt = filter_datum(self.fields, self.REDACTION, msg, self.SEPARATOR)
-        return txt
+        text = filter_datum(self.fields, self.REDACTION, msg, self.SEPARATOR)
+        return text
+
+    
+def get_logger() -> logging.Logger:
+        """Returns a configured logger."""
+        logger = logging.getLogger('user_data')
+        logger.setLevel(logging.INFO)
+        logger.propagate = False
+
+        handler = logging.StreamHandler()
+        handler.setFormatter(RedactingFormatter(PII_FIELDS))
+        logger.addHandler(handler)
+
+        return logger
