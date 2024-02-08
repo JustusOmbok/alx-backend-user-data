@@ -95,5 +95,6 @@ def get_db():
         user=username,
         password=password,
         host=host,
+        port=3306,
         database=database
     )
