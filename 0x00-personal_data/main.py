@@ -1,12 +1,15 @@
-#!/usr/bin/env python3
-"""
-Main file
-"""
+-- setup mysql server
+-- configure permissions
+CREATE DATABASE IF NOT EXISTS my_db;
+CREATE USER IF NOT EXISTS root@localhost IDENTIFIED BY 'root';
+GRANT ALL PRIVILEGES ON my_db.* TO 'root'@'localhost';
 
-import logging
+USE my_db;
 
-get_logger = __import__('filtered_logger').get_logger
-PII_FIELDS = __import__('filtered_logger').PII_FIELDS
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    email VARCHAR(256)
+);
 
-print(get_logger.__annotations__.get('return'))
-print("PII_FIELDS: {}".format(len(PII_FIELDS)))
+INSERT INTO users(email) VALUES ("bob@dylan.com");
+INSERT INTO users(email) VALUES ("bib@dylan.com");
