@@ -98,3 +98,37 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         database=db_name,
     )
     return connection
+
+
+def main() -> NoReturn:
+    """Retrieves all rows in the users table
+    and displays each row under a filtered format."""
+    logger = logging.getLogger('user_data')
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+
+    handler = logging.StreamHandler()
+    formatter = logging.Formatter(
+        '[HOLBERTON] user_data INFO %(asctime)s: %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S,%f'
+        )
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM users;")
+    filtered_fields = ["name", "email", "phone", "ssn", "password"]
+    for row in cursor:
+        filtered_row = (
+            "; ".join([f"{field}=***" if field in filtered_fields
+                       else f"{field}={row[field]}" for field in row])
+                       )
+        logger.info(filtered_row)
+
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
