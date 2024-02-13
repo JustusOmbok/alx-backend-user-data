@@ -17,11 +17,13 @@ auth_type = getenv("AUTH_TYPE")
 if auth_type == 'auth':
     auth = Auth()
 
+
 @app.errorhandler(404)
 def not_found(error):
     """ Not found handle
     """
     return jsonify({"error": "Not found"}), 404
+
 
 @app.errorhandler(401)
 def unauthorized(error):
@@ -30,10 +32,12 @@ def unauthorized(error):
         "error": "Unauthorized"
         }), 401
 
+
 @app.errorhandler(403)
 def forbidden(error):
     """Forbidden handler"""
     return jsonify({"error": "Forbidden"}), 403
+
 
 @app.before_request
 def authenticate_user():
@@ -50,6 +54,7 @@ def authenticate_user():
             abort(401)
         if auth.current_user(request) is None:
             abort(403)
+
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
