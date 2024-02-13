@@ -3,6 +3,7 @@
 """
 from .auth import Auth
 
+
 class BasicAuth(Auth):
     """Class for managing Basic authentication"""
     pass
