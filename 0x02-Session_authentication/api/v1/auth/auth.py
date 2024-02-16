@@ -4,6 +4,7 @@
 import re
 from typing import List, TypeVar
 from flask import request
+import os
 
 
 class Auth:
@@ -62,6 +63,7 @@ class Auth:
         return None
 
     def session_cookie(self, request=None):
+        """Returns session cookies."""
         if request is None:
             return None
 
