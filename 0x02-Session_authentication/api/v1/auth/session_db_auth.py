@@ -10,19 +10,26 @@ from flask import request
 
 class SessionDBAuth(SessionExpAuth):
     """Session authentication with session IDs stored in the database."""
-    def create_session(self, user_id=None):
-        """Create a new session and store it in the database."""
-        session_id = super().create_session(user_id)
-        if session_id is None:
-            return None
+    def create_session(self, user_id=None) -> str:
+        """
+        Creates and stores a session id for the user.
 
-        session = UserSession(
-            user_id=user_id,
-            session_id=session_id,
-            created_at=datetime.now()
-        )
-        session.save()
-        return session_id
+        Args:
+            user_id (str): The ID of the user for whom the session is created.
+
+        Returns:
+            str: The session ID if created successfully, None otherwise.
+        """
+        session_id = super().create_session(user_id)
+        if type(session_id) == str:
+            kwargs = {
+                'user_id': user_id,
+                'session_id': session_id,
+            }
+            user_session = UserSession(**kwargs)
+            user_session.save()
+            return session_id
+        return None
 
     def user_id_for_session_id(self, session_id=None):
         """Retrieve the user ID associated
