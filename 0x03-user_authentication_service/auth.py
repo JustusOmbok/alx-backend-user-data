@@ -84,7 +84,7 @@ class Auth:
         """Generate reset password token for the user"""
         user = self._db.find_user_by(email=email)
         if not user:
-            raise ValueError(f"User with email {email} does not exist.")
+            raise ValueError(f"User does not exist.")
 
         reset_token = str(uuid.uuid4())
         user.reset_token = reset_token
